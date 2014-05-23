@@ -28,9 +28,9 @@ ScrollView
 {
     id : board
 
-    //property alias contentItem : flickBoard
-    property alias contentHeight : flickBoard.contentHeight
-    property alias contentWidth : flickBoard.contentWidth
+    property alias internalBoard : flickBoard
+//    property alias contentHeight : flickBoard.contentHeight
+//    property alias contentWidth : flickBoard.contentWidth
 
     function createPostIt(component)
     {
@@ -61,35 +61,34 @@ ScrollView
             }
         }
 
-        board.contentWidth = vx + 10
-        board.contentHeight = vy + 10
+        flickBoard.width = vx //+ 10
+        flickBoard.height = vy //+ 10
     }
 
     anchors.fill: parent
 
     signal clicked();
 
-    Flickable
+    Item
     {
         id : flickBoard
 
         Component.onCompleted:
         {
-            contentHeight = parent.height - 10
-            contentWidth = parent.width - 10
+            height = parent.height// - 10
+            width = parent.width// - 10
         }
 
-        anchors.fill: parent
 
-        MouseArea
-        {
-            anchors.fill: parent
+//        MouseArea
+//        {
+//            anchors.fill: parent
 
-            onClicked:
-            {
-                board.clicked();
-            }
+//            onClicked:
+//            {
+//                board.clicked();
+//            }
 
-        }
+//        }
     }
 }

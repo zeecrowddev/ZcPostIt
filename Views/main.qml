@@ -20,7 +20,7 @@
 */
 
 import QtQuick 2.2
-import QtQuick.Controls 1.0
+import QtQuick.Controls 1.2
 
 import "mainPresenter.js" as Presenter
 
@@ -37,8 +37,7 @@ ZcAppView
         if (Presenter.instance[idItem] === undefined ||
                 Presenter.instance[idItem] === null)
         {
-            //Presenter.instance[idItem] = board.createPostIt(postItComponent)
-            postItComponent.createObject(board.contentItem);
+            Presenter.instance[idItem] = postItComponent.createObject(board.internalBoard);
         }
     }
 
@@ -260,6 +259,8 @@ ZcAppView
                     {
                         mainView.createPostIt(idItem)
                         var value = postItDefinition.getItem(idItem,"");
+
+                        console.log(">> Presenter.instance[idItem] " + Presenter.instance[idItem])
                         Presenter.instance[idItem].text = value;
 
                         Presenter.instance[idItem].idItem = idItem;
