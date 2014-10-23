@@ -24,9 +24,9 @@ import QtQuick.Controls 1.2
 
 import "mainPresenter.js" as Presenter
 
-import ZcClient 1.0
+import ZcClient 1.0 as Zc
 
-ZcAppView
+Zc.AppView
 {
     id : mainView
 
@@ -173,8 +173,21 @@ ZcAppView
             {              
 
                 if (visible)
-                {
+                {                    
+                    var o =  postItDefinition.getItem(idItem,"");
+
                     postItDefinition.setItem(idItem,newText);
+
+                    console.log(">> o " + o)
+                    console.log(">> newText " + newText)
+
+                    if (o !== newText)
+                    {
+                        var modif = o.text === "" || o.text === null
+                        appNotification.logEvent( modif ? Zc.AppNotification.Modify : Zc.AppNotification.Add,"Post It",newText,"")
+                    }
+
+
                 }
             }
 
@@ -188,13 +201,18 @@ ZcAppView
         return mainView.context.nickname + "|" + d.toLocaleDateString() + "_" + d.toLocaleTimeString() + " " + d.getMilliseconds();
     }
 
-    ZcCrowdActivity
+    Zc.CrowdActivity
     {
         id : activity
 
-        ZcCrowdActivityItems
+        Zc.AppNotification
         {
-            ZcQueryStatus
+            id : appNotification
+        }
+
+        Zc.CrowdActivityItems
+        {
+            Zc.QueryStatus
             {
                 id : postItDefinitionItemQueryStatus
 
@@ -239,9 +257,9 @@ ZcAppView
 
 
 
-        ZcCrowdActivityItems
+        Zc.CrowdActivityItems
         {
-            ZcQueryStatus
+            Zc.QueryStatus
             {
                 id : postItPositionItemQueryStatus
 
