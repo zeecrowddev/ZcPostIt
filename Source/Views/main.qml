@@ -82,6 +82,8 @@ Zc.AppView
             tooltip : "Close Aplication"
             onTriggered:
             {
+                board.focus = false;
+                Qt.inputMethod.hide();
                 mainView.closeTask();
             }
         },
@@ -171,15 +173,12 @@ Zc.AppView
 
             onPostItTextChanged:
             {              
-
+                Qt.inputMethod.hide();
                 if (visible)
                 {                    
                     var o =  postItDefinition.getItem(idItem,"");
 
                     postItDefinition.setItem(idItem,newText);
-
-                    console.log(">> o " + o)
-                    console.log(">> newText " + newText)
 
                     if (o !== newText)
                     {
