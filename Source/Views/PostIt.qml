@@ -52,7 +52,7 @@ FocusScope
      //   color           : "#FBFC86"
         border { left: 30; top: 30; right: 30; bottom: 30 }
         anchors.fill    : parent
-        source                      : "qrc:/ZcPostIt/Resources/postit_" + postIt.postItColor +  ".png"
+        source                      : "../Resources/postit_" + postIt.postItColor +  ".png"
 
     }
 
@@ -146,7 +146,7 @@ FocusScope
 
     Image
     {
-        source                      : "qrc:/ZcPostIt/Resources/tack.png"
+        source                      : "../Resources/tack.png"
         anchors.top                 : parent.top
         anchors.horizontalCenter    : parent.horizontalCenter
     }
@@ -291,7 +291,7 @@ FocusScope
     Image
     {
         id          :   close
-        source                      : "qrc:/ZcPostIt/Resources/bin.png"
+        source                      : "../Resources/bin.png"
         width           : 30
         height          : 30
         x               : postIt.width - 50
@@ -311,7 +311,7 @@ FocusScope
     Image
     {
         id : tofront
-        source                      : "qrc:/ZcPostIt/Resources/toFront.png"
+        source                      : "../Resources/toFront.png"
         width           : 30
         height          : 30
         anchors.top     : toback.top
@@ -330,7 +330,7 @@ FocusScope
     Image
     {
         id : validate
-        source                      : "qrc:/ZcPostIt/Resources/validate.png"
+        source                      : "../Resources/validate.png"
         width           : 30
         height          : 30
         anchors.top     : tofront.top
@@ -354,7 +354,7 @@ FocusScope
     Image
     {
         id : toback
-        source                      : "qrc:/ZcPostIt/Resources/toBack.png"
+        source                      : "../Resources/toBack.png"
         width           : 30
         height          : 30
         x               : 10

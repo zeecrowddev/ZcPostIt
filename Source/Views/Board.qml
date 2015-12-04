@@ -22,22 +22,18 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
-import "mainPresenter.js" as Presenter
 
 ScrollView
 {
     id : board
 
     property alias internalBoard : flickBoard
-//    property alias contentHeight : flickBoard.contentHeight
-//    property alias contentWidth : flickBoard.contentWidth
 
     function createPostIt(component)
     {
         component.createObject(flickBoard.contentItem)
     }
 
- //   style : ScrollViewStyle {}
 
     function resize()
     {

@@ -2,7 +2,6 @@ OTHER_FILES += \
     Views/main.qml \
     Packages/ZcPostIt.cfg \
     Views/PostIt.qml \
-    Views/mainPresenter.js \
     Views/AnimationBase.qml \
     Views/Board.qml \
     Views/SplashScreen.qml \
@@ -24,7 +23,6 @@ OTHER_FILES += \
     ../../Source/Resources/toBack.png \
     ../../Source/Resources/toFront.png \
     ../../Source/Resources/validate.png \
-    ../../Source/Views/mainPresenter.js \
     ../../Source/Views/AnimationBase.qml \
     ../../Source/Views/Board.qml \
     ../../Source/Views/main.qml \

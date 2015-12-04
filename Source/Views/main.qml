@@ -22,8 +22,6 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 
-import "mainPresenter.js" as Presenter
-
 import ZcClient 1.0 as Zc
 
 Zc.AppView
@@ -32,38 +30,61 @@ Zc.AppView
 
     anchors.fill : parent
 
+    property var activePostIt : null
+    property var localItems : ({})
+
+
+    function forEachInArray(array, delegate)
+    {
+        for (var i=0;i<array.length;i++)
+        {
+            delegate(array[i]);
+        }
+    }
+
+    function setActivePostIt(postIt)
+    {
+        if (mainView.activePostIt !== null)
+        {
+            mainView.activePostIt.state = "readonly";
+        }
+
+        mainView.activePostIt = postIt;
+   }
+
+
     function createPostIt(idItem)
     {
-        if (Presenter.instance[idItem] === undefined ||
-                Presenter.instance[idItem] === null)
+        if (localItems[idItem] === undefined ||
+                localItems[idItem] === null)
         {
-            Presenter.instance[idItem] = postItComponent.createObject(board.internalBoard);
+            localItems[idItem] = postItComponent.createObject(board.internalBoard);
         }
     }
 
     function setPosition(idItem,value)
     {
-        if (Presenter.instance[idItem] === undefined ||
-                Presenter.instance[idItem] === null)
+        if (localItems[idItem] === undefined ||
+                localItems[idItem] === null)
             return;
 
         if (value === "")
         {
-            Presenter.instance[idItem].x = 0;
-            Presenter.instance[idItem].y = 0;
+            localItems[idItem].x = 0;
+            localItems[idItem].y = 0;
         }
         else
         {
             var position = value.split("|");
-            Presenter.instance[idItem].x = position[0];
-            Presenter.instance[idItem].y = position[1];
-            Presenter.instance[idItem].z = position[2];
-            Presenter.instance[idItem].width = position[3];
-            Presenter.instance[idItem].height = position[4];
+            localItems[idItem].x = position[0];
+            localItems[idItem].y = position[1];
+            localItems[idItem].z = position[2];
+            localItems[idItem].width = position[3];
+            localItems[idItem].height = position[4];
 
             if (position.length > 5)
             {
-                Presenter.instance[idItem].postItColor = position[5];
+                localItems[idItem].postItColor = position[5];
             }
         }
     }
@@ -78,7 +99,7 @@ Zc.AppView
         Action {
             id: closeAction
             shortcut: "Ctrl+X"
-            iconSource: "qrc:/ZcPostIt/Resources/close.png"
+            iconSource: "../Resources/close.png"
             tooltip : "Close Aplication"
             onTriggered:
             {
@@ -90,7 +111,7 @@ Zc.AppView
         Action {
             id: plusYellow
             tooltip : "Add a yellow PostIt"
-            iconSource : "qrc:/ZcPostIt/Resources/postit_yellow_icon.png"
+            iconSource : "../Resources/postit_yellow_icon.png"
             onTriggered:
             {
                 var idItem = generateId();
@@ -100,7 +121,7 @@ Zc.AppView
         Action {
             id: plusBlue
             tooltip : "Add a blue PostIt"
-            iconSource : "qrc:/ZcPostIt/Resources/postit_blue_icon.png"
+            iconSource : "../Resources/postit_blue_icon.png"
             onTriggered:
             {
                 var idItem = generateId();
@@ -111,7 +132,7 @@ Zc.AppView
         Action {
             id: plusPink
             tooltip : "Add a pink PostIt"
-            iconSource : "qrc:/ZcPostIt/Resources/postit_pink_icon.png"
+            iconSource : "../Resources/postit_pink_icon.png"
             onTriggered:
             {
                 var idItem = generateId();
@@ -123,7 +144,7 @@ Zc.AppView
         Action {
             id: plusGreen
             tooltip : "Add a green PostIt"
-            iconSource : "qrc:/ZcPostIt/Resources/postit_green_icon.png"
+            iconSource : "../Resources/postit_green_icon.png"
             onTriggered:
             {
                 var idItem = generateId();
@@ -155,7 +176,7 @@ Zc.AppView
             {
                 if (state === "edition")
                 {
-                    Presenter.instance.setActivePostIt(postIt)
+                    mainView.setActivePostIt(postIt)
                 }
             }
 
@@ -229,28 +250,28 @@ Zc.AppView
             {
                 mainView.createPostIt(idItem)
                 var value = postItDefinition.getItem(idItem,"");
-                Presenter.instance[idItem].text = value;
+                localItems[idItem].text = value;
 
-                Presenter.instance[idItem].idItem = idItem;
+                localItems[idItem].idItem = idItem;
 
-                if (Presenter.instance[idItem].text === "" ||
-                        Presenter.instance[idItem].text === null)
+                if (localItems[idItem].text === "" ||
+                        localItems[idItem].text === null)
                 {
                     var nickName = idItem.split("|");
                     if (nickName.length > 0 && nickName[0] === mainView.context.nickname)
                     {
-                        Presenter.instance[idItem].state = "edition"
+                        localItems[idItem].state = "edition"
                     }
                 }
             }
             onItemDeleted :
             {
-                if (Presenter.instance[idItem] === undefined ||
-                        Presenter.instance[idItem] === null)
+                if (localItems[idItem] === undefined ||
+                        localItems[idItem] === null)
                     return;
-                Presenter.instance[idItem].visible = false;
-                Presenter.instance[idItem].parent === null;
-                Presenter.instance[idItem] = null;
+                localItems[idItem].visible = false;
+                localItems[idItem].parent === null;
+                localItems[idItem] = null;
             }
         }
 
@@ -272,15 +293,13 @@ Zc.AppView
                     var allItems = postItDefinition.getAllItems();
                     if (allItems === null)
                         return;
-                    Presenter.instance.forEachInArray(allItems,function(idItem)
+                    mainView.forEachInArray(allItems,function(idItem)
                     {
                         mainView.createPostIt(idItem)
                         var value = postItDefinition.getItem(idItem,"");
 
-                        console.log(">> Presenter.instance[idItem] " + Presenter.instance[idItem])
-                        Presenter.instance[idItem].text = value;
-
-                        Presenter.instance[idItem].idItem = idItem;
+                        localItems[idItem].text = value;
+                        localItems[idItem].idItem = idItem;
 
                         mainView.setPosition(idItem,postItPosition.getItem(idItem,""));
                     });
@@ -310,7 +329,6 @@ Zc.AppView
 
     onLoaded :
     {
-        Presenter.initPresenter()
         activity.start();
     }
 
@@ -330,9 +348,9 @@ Zc.AppView
 
         onClicked:
         {
-            if (Presenter.instance.activePostIt !== null)
+            if (localItems.activePostIt !== null)
             {
-                Presenter.instance.setActivePostIt(null);
+                mainView.setActivePostIt(null);
             }
         }
     }

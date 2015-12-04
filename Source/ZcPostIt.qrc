@@ -18,7 +18,6 @@
         <file>Views/AnimationBase.qml</file>
         <file>Views/Board.qml</file>
         <file>Views/main.qml</file>
-        <file>Views/mainPresenter.js</file>
         <file>Views/PostIt.qml</file>
         <file>Views/SplashScreen.qml</file>
         <file>Resources/ZcPostIt.png</file>
