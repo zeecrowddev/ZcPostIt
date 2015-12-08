@@ -148,11 +148,11 @@ Zc.AppView
             right: parent.right
             top : toolbarBoard.bottom
         }
-        onClicked: {
+        /*onClicked: {
             if (localItems.activePostIt !== null) {
                 mainView.setActivePostIt(null);
             }
-        }
+        }*/
     }
 
     function showContexctualMenu(idItem) {
@@ -187,6 +187,17 @@ Zc.AppView
         Action {
             text: qsTr("To Top")
             onTriggered: {
+
+                var maxZ = 0
+                for ( var item in localItems ) {
+                    if (localItems[item].z !== undefined && localItems[item].z> maxZ) {
+                        maxZ = localItems[item].z
+                    }
+                }
+
+                var currentItem = localItems[contextualMenu.idItem];
+                var position = currentItem.x + "|" + currentItem.y + "|" + maxZ+1 + "|" + currentItem.width + "|" + currentItem.height + "|" + currentItem.postItColor;
+                postItPosition.setItem(contextualMenu.idItem,position);
             }
         }
 
@@ -320,13 +331,13 @@ Zc.AppView
             boxWidth : mainView.width
             boxHeight : mainView.height
 
-            onStateChanged:
+            /*onStateChanged:
             {
                 if (state === "edition")
                 {
                     mainView.setActivePostIt(postIt)
                 }
-            }
+            }*/
 
             /*onDeletePostIt:
             {

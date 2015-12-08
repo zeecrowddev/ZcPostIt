@@ -58,6 +58,7 @@ Item {
             postItX = local.x;
             postItY = local.y;
             postItZ = local.z;
+            textArea.text =local.text
             postIt.width = local.width;
             postIt.height = local.height;
             postIt.postItColor = local.postItColor;
