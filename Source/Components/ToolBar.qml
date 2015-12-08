@@ -20,21 +20,28 @@
 */
 
 import QtQuick 2.5
+import QtQuick.Dialogs 1.2
+import QtQuick.Window 2.2
 import QtQuick.Controls 1.3
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.2
 
-Rectangle
-{
-    anchors.fill: parent
-    color : "grey"
-    opacity : 0.5
+import ZcClient 1.0 as Zc
 
-    Label
-    {
-        anchors.centerIn: parent
-        font.pixelSize:  40;
-        color : "white"
-        text : "Loading ..."
+ToolBar {
+    implicitHeight: Zc.AppStyleSheet.height(0.26)
+
+    style: ToolBarStyle {
+        padding {
+            left: 12
+            right: 12
+            top: 0
+            bottom: 0
+        }
+
+        background: Rectangle {
+            implicitHeight: Zc.AppStyleSheet.height(0.3)
+            color: "white"
+        }
     }
 }
-

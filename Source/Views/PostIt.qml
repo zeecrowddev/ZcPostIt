@@ -19,9 +19,9 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.2
-
-import QtQuick.Controls 1.2
+import QtQuick 2.5
+import QtQuick.Controls 1.3
+import QtQuick.Controls.Styles 1.4
 
 FocusScope
 {
@@ -42,18 +42,16 @@ FocusScope
     y : 0
 
     signal positionChanged(int valx,int valy,int valz, int valw, int valh, string c);
-    signal postItTextChanged(string newText);
-    signal deletePostIt(string idItem);
+    //signal postItTextChanged(string newText);
+    //signal deletePostIt(string idItem);
 
 
     BorderImage
     {
         id              : activeBorder
-     //   color           : "#FBFC86"
         border { left: 30; top: 30; right: 30; bottom: 30 }
         anchors.fill    : parent
-        source                      : "../Resources/postit_" + postIt.postItColor +  ".png"
-
+        source          : postIt.postItColor == "" ? "../Resources/postit_yellow.png" : "../Resources/postit_" + postIt.postItColor +  ".png"
     }
 
 
@@ -83,11 +81,11 @@ FocusScope
                 target      : grow
                 visible     : true
             }
-            PropertyChanges
+            /*PropertyChanges
             {
                 target      : close
                 visible     : true
-            }
+            }*/
             PropertyChanges
             {
                 target      : toback
@@ -119,11 +117,11 @@ FocusScope
                 target      : grow
                 visible    : false
             }
-            PropertyChanges
+           /* PropertyChanges
             {
                 target      : close
                 visible    : false
-            }
+            }*/
             PropertyChanges
             {
                 target      : toback
@@ -181,10 +179,10 @@ FocusScope
 
             onActiveFocusChanged:
             {
-                if (activeFocus === false)
+                /*if (activeFocus === false)
                 {
                     postItTextChanged(text);
-                }
+                }*/
 
             }
 
@@ -204,9 +202,20 @@ FocusScope
     {
         id : mouseArea
 
+        anchors.fill : parent
+
+        onPressAndHold : {
+
+            console.log(">> onPressAndHold " + postIt.idItem);
+            mainView.showContexctualMenu(postIt.idItem);
+        }
+
+        /*
         anchors.top  : parent.top
         anchors.left  : parent.left
-        anchors.right  : parent.right
+       anchors.right  : parent.right
+
+       */
 
         drag.target     : postIt
         drag.axis       : Drag.XAndYAxis
@@ -231,7 +240,7 @@ FocusScope
         {
             oldPostItX = postIt.x
             oldPostItY = postIt.y
-            postIt.state = "edition"
+        //    postIt.state = "edition"
         }
     }
 
@@ -288,7 +297,7 @@ FocusScope
         }
     }
 
-    Image
+  /*  Image
     {
         id          :   close
         source                      : "../Resources/bin.png"
@@ -303,10 +312,10 @@ FocusScope
 
             anchors.fill  : parent
 
-            onClicked: deletePostIt(idItem);
+           // onClicked: deletePostIt(idItem);
 
         }
-    }
+    }*/
 
     Image
     {
@@ -344,7 +353,7 @@ FocusScope
             anchors.fill: parent
             onClicked:
             {
-                postIt.postItTextChanged(textArea.text)
+               // postIt.postItTextChanged(textArea.text)
                 validate.visible = false;
                 enabled.visible = false;
             }

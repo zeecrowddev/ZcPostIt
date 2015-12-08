@@ -2,7 +2,6 @@ OTHER_FILES += \
     Views/main.qml \
     Packages/ZcPostIt.cfg \
     Views/PostIt.qml \
-    Views/AnimationBase.qml \
     Views/Board.qml \
     Views/SplashScreen.qml \
     ../../Source/ZcPostIt.cfg \
@@ -23,11 +22,16 @@ OTHER_FILES += \
     ../../Source/Resources/toBack.png \
     ../../Source/Resources/toFront.png \
     ../../Source/Resources/validate.png \
-    ../../Source/Views/AnimationBase.qml \
     ../../Source/Views/Board.qml \
     ../../Source/Views/main.qml \
     ../../Source/Views/PostIt.qml \
-    ../../Source/Views/SplashScreen.qml
+    ../../Source/Views/SplashScreen.qml \
+    ../../Source/Components/ToolBar.qml \
+    ../../Source/Components/ToolButton.qml
 
 RESOURCES += \
     ../../Source/ZcPostIt.qrc
+
+DISTFILES += \
+    ../../Source/Components/ActionButtonStyle.qml \
+    ../../Source/Components/ActionList.qml

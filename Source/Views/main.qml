@@ -19,10 +19,13 @@
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-import QtQuick 2.2
-import QtQuick.Controls 1.2
+import QtQuick 2.5
+import QtQuick.Controls 1.3
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.2
 
 import ZcClient 1.0 as Zc
+import "../Components" as PiComponents
 
 Zc.AppView
 {
@@ -33,6 +36,180 @@ Zc.AppView
     property var activePostIt : null
     property var localItems : ({})
 
+    PiComponents.ToolBar
+    {
+        id : toolbarBoard
+
+        anchors {
+            right: parent.right
+            left: parent.left
+            top: parent.top
+            topMargin : 1
+        }
+
+        Row {
+            id : toolBarId
+            anchors.fill: parent
+
+            ToolButton {
+                onClicked: {
+                //    var idItem = generateId();
+                //    postItDefinition.setItem(idItem,"");
+                    showPostItEdit("","yellow");
+                }
+                iconSource: "../Resources/postit_yellow_icon.png"
+            }
+            ToolButton {
+                onClicked: {
+                    //var idItem = generateId();
+                    //postItDefinition.setItem(idItem,"");
+                    //postItPosition.setItem(idItem,"0|0|0|200|200|blue");
+                    showPostItEdit("","blue");
+                }
+                iconSource: "../Resources/postit_blue_icon.png"
+            }
+            ToolButton {
+                onClicked: {
+                    //var idItem = generateId();
+                    //postItDefinition.setItem(idItem,"");
+                    //postItPosition.setItem(idItem,"0|0|0|200|200|green");
+                    showPostItEdit("","green");
+                }
+                iconSource: "../Resources/postit_green_icon.png"
+            }
+            ToolButton {
+                Layout.alignment: Qt.AlignLeft
+                onClicked: {
+                    //var idItem = generateId();
+                    //postItDefinition.setItem(idItem,"");
+                    //postItPosition.setItem(idItem,"0|0|0|200|200|pink");
+                    showPostItEdit("","pink");
+                }
+                iconSource: "../Resources/postit_pink_icon.png"
+            }
+
+        }
+    }
+
+
+    PiComponents.ToolBar
+    {
+        id : toolbarPostit
+
+        visible : false
+
+        anchors {
+            right: parent.right
+            left: parent.left
+            top: parent.top
+            topMargin : 1
+        }
+
+        RowLayout {
+            anchors.fill: parent
+
+            PiComponents.ToolButton {
+                Layout.alignment: Qt.AlignLeft
+                onClicked: {
+                    postItModification.clear();
+                    postItModification.visible = false
+                    toolbarBoard.visible = true
+                    toolbarPostit.visible = false
+                }
+                text: qsTr("Cancel")
+            }
+
+            PiComponents.ToolButton {
+                Layout.alignment: Qt.AlignRight
+                onClicked: {
+                    var idItem = postItModification.idItem;
+                    if (idItem == "") {
+                         idItem = generateId();
+                    }
+                    postItTextChanged(idItem,postItModification.textPostIt)
+                    postItPosition.setItem(idItem,postItModification.getPositionString());
+
+                    postItModification.visible = false
+                    toolbarBoard.visible = true
+                    toolbarPostit.visible = false
+                    postItModification.clear();
+                }
+                text: qsTr("Ok")
+            }
+        }
+    }
+
+    Board {
+        id : board
+
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+            top : toolbarBoard.bottom
+        }
+        onClicked: {
+            if (localItems.activePostIt !== null) {
+                mainView.setActivePostIt(null);
+            }
+        }
+    }
+
+    function showContexctualMenu(idItem) {
+        contextualMenu.idItem = idItem
+        contextualMenu.show();
+    }
+
+    function showPostItEdit(idItem,color) {
+        if (idItem!=="") {
+            postItModification.idItem = idItem;
+        } else {
+            postItModification.postItColor = color;
+        }
+
+        postItModification.visible = true
+        toolbarBoard.visible = false
+        toolbarPostit.visible = true
+    }
+
+    PiComponents.ActionList {
+        id: contextualMenu
+
+        property string idItem : ""
+
+        Action {
+            text: qsTr("Edit")
+            onTriggered: {
+                mainView.showPostItEdit(contextualMenu.idItem,"");
+            }
+        }
+
+        Action {
+            text: qsTr("To Top")
+            onTriggered: {
+            }
+        }
+
+        Action {
+            text: qsTr("Delete")
+            onTriggered: {
+                postItDefinition.deleteItem(contextualMenu.idItem);
+                postItPosition.deleteItem(contextualMenu.idItem);
+            }
+        }
+    }
+
+    PostItEdit {
+        id : postItModification
+        visible : false
+        anchors {
+            top : toolbarPostit.bottom
+            left : parent.left
+            right : parent.right
+            bottom: parent.bottom
+        }
+
+    }
 
     function forEachInArray(array, delegate)
     {
@@ -50,15 +227,15 @@ Zc.AppView
         }
 
         mainView.activePostIt = postIt;
-   }
+    }
 
-
-    function createPostIt(idItem)
+    function createPostItIfNecessary(idItem)
     {
         if (localItems[idItem] === undefined ||
                 localItems[idItem] === null)
         {
             localItems[idItem] = postItComponent.createObject(board.internalBoard);
+            console.log(">> create " + idItem + " -> " + localItems[idItem] )
         }
     }
 
@@ -94,62 +271,16 @@ Zc.AppView
         mainView.close();
     }
 
-    toolBarActions :
+    menuActions :
         [
         Action {
             id: closeAction
-            shortcut: "Ctrl+X"
-            iconSource: "../Resources/close.png"
-            tooltip : "Close Aplication"
+            text:  "Close ZcPostIt"
             onTriggered:
             {
                 board.focus = false;
                 Qt.inputMethod.hide();
                 mainView.closeTask();
-            }
-        },
-        Action {
-            id: plusYellow
-            tooltip : "Add a yellow PostIt"
-            iconSource : "../Resources/postit_yellow_icon.png"
-            onTriggered:
-            {
-                var idItem = generateId();
-                postItDefinition.setItem(idItem,"");
-            }
-        },
-        Action {
-            id: plusBlue
-            tooltip : "Add a blue PostIt"
-            iconSource : "../Resources/postit_blue_icon.png"
-            onTriggered:
-            {
-                var idItem = generateId();
-                postItDefinition.setItem(idItem,"");
-                postItPosition.setItem(idItem,"0|0|0|200|200|blue");
-            }
-        },
-        Action {
-            id: plusPink
-            tooltip : "Add a pink PostIt"
-            iconSource : "../Resources/postit_pink_icon.png"
-            onTriggered:
-            {
-                var idItem = generateId();
-                postItDefinition.setItem(idItem,"");
-                postItPosition.setItem(idItem,"0|0|0|200|200|pink");
-            }
-        }
-        ,
-        Action {
-            id: plusGreen
-            tooltip : "Add a green PostIt"
-            iconSource : "../Resources/postit_green_icon.png"
-            onTriggered:
-            {
-                var idItem = generateId();
-                postItDefinition.setItem(idItem,"");
-                postItPosition.setItem(idItem,"0|0|0|200|200|green");
             }
         }
     ]
@@ -159,6 +290,23 @@ Zc.AppView
         id : splashScreenId
         width : parent.width
         height: parent.height
+    }
+
+    function postItTextChanged(idItem,newText) {
+        var o =  postItDefinition.getItem(idItem,"");
+
+        console.log(">> postItTextChanged " + idItem + " -> " + newText)
+        postItDefinition.setItem(idItem,newText);
+
+        if (o !== newText)
+        {
+            var modif = o.text === "" || o.text === null
+
+            // CP : Form qml mock
+            var enumModify = Zc.AppNotification !== undefined ? Zc.AppNotification.Modify !== undefined : 2;
+            var enumAdd = Zc.AppNotification !== undefined ? Zc.AppNotification.Add !== undefined : 0;
+            appNotification.logEvent( modif ? enumAdd : enumModify ,"Post It",newText,"")
+        }
     }
 
 
@@ -180,11 +328,11 @@ Zc.AppView
                 }
             }
 
-            onDeletePostIt:
+            /*onDeletePostIt:
             {
                 postItDefinition.deleteItem(idItem);
                 postItPosition.deleteItem(idItem)
-            }
+            }*/
 
             onPositionChanged:
             {
@@ -192,11 +340,11 @@ Zc.AppView
                 postItPosition.setItem(idItem,position);
             }
 
-            onPostItTextChanged:
-            {              
+            /*    onPostItTextChanged:
+            {
                 Qt.inputMethod.hide();
                 if (visible)
-                {                    
+                {
                     var o =  postItDefinition.getItem(idItem,"");
 
                     postItDefinition.setItem(idItem,newText);
@@ -209,7 +357,7 @@ Zc.AppView
 
 
                 }
-            }
+            }*/
 
         }
     }
@@ -248,22 +396,25 @@ Zc.AppView
 
             onItemChanged :
             {
-                mainView.createPostIt(idItem)
+                mainView.createPostItIfNecessary(idItem)
                 var value = postItDefinition.getItem(idItem,"");
+                console.log(">> idItem " + idItem + " -> " + value)
+
                 localItems[idItem].text = value;
 
                 localItems[idItem].idItem = idItem;
 
-                if (localItems[idItem].text === "" ||
+                /*if (localItems[idItem].text === "" ||
                         localItems[idItem].text === null)
                 {
                     var nickName = idItem.split("|");
                     if (nickName.length > 0 && nickName[0] === mainView.context.nickname)
                     {
-                        localItems[idItem].state = "edition"
+                     //   localItems[idItem].state = "edition"
                     }
-                }
+                }*/
             }
+
             onItemDeleted :
             {
                 if (localItems[idItem] === undefined ||
@@ -274,8 +425,6 @@ Zc.AppView
                 localItems[idItem] = null;
             }
         }
-
-
 
         Zc.CrowdActivityItems
         {
@@ -295,7 +444,7 @@ Zc.AppView
                         return;
                     mainView.forEachInArray(allItems,function(idItem)
                     {
-                        mainView.createPostIt(idItem)
+                        mainView.createPostItIfNecessary(idItem)
                         var value = postItDefinition.getItem(idItem,"");
 
                         localItems[idItem].text = value;
@@ -337,23 +486,6 @@ Zc.AppView
         activity.stop();
     }
 
-
-    Board
-    {
-        id : board
-        //        parking: parkingPanelLeft
-        //        main : mainPanel
-
-        //        state : "show"
-
-        onClicked:
-        {
-            if (localItems.activePostIt !== null)
-            {
-                mainView.setActivePostIt(null);
-            }
-        }
-    }
 
     Item
     {
