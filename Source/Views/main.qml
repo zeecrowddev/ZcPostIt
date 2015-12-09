@@ -53,26 +53,18 @@ Zc.AppView
 
             ToolButton {
                 onClicked: {
-                //    var idItem = generateId();
-                //    postItDefinition.setItem(idItem,"");
                     showPostItEdit("","yellow");
                 }
                 iconSource: "../Resources/postit_yellow_icon.png"
             }
             ToolButton {
                 onClicked: {
-                    //var idItem = generateId();
-                    //postItDefinition.setItem(idItem,"");
-                    //postItPosition.setItem(idItem,"0|0|0|200|200|blue");
                     showPostItEdit("","blue");
                 }
                 iconSource: "../Resources/postit_blue_icon.png"
             }
             ToolButton {
                 onClicked: {
-                    //var idItem = generateId();
-                    //postItDefinition.setItem(idItem,"");
-                    //postItPosition.setItem(idItem,"0|0|0|200|200|green");
                     showPostItEdit("","green");
                 }
                 iconSource: "../Resources/postit_green_icon.png"
@@ -80,12 +72,23 @@ Zc.AppView
             ToolButton {
                 Layout.alignment: Qt.AlignLeft
                 onClicked: {
-                    //var idItem = generateId();
-                    //postItDefinition.setItem(idItem,"");
-                    //postItPosition.setItem(idItem,"0|0|0|200|200|pink");
                     showPostItEdit("","pink");
                 }
                 iconSource: "../Resources/postit_pink_icon.png"
+            }
+            ToolButton {
+                Layout.alignment: Qt.AlignLeft
+                onClicked: {
+                    board.internalBoard.scale += 0.1;
+                }
+                iconSource: "../Resources/loupe_plus.png"
+            }
+            ToolButton {
+                Layout.alignment: Qt.AlignLeft
+                onClicked: {
+                    board.internalBoard.scale -= 0.1;
+                }
+                iconSource: "../Resources/loupe_moins.png"
             }
 
         }
