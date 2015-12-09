@@ -151,6 +151,16 @@ Zc.AppView
             right: parent.right
             top : toolbarBoard.bottom
         }
+        PinchArea {
+            anchors.fill: parent
+
+            onSmartZoom : {
+
+                console.log(">> zoom")
+            }
+        }
+
+
         /*onClicked: {
             if (localItems.activePostIt !== null) {
                 mainView.setActivePostIt(null);
@@ -249,7 +259,6 @@ Zc.AppView
                 localItems[idItem] === null)
         {
             localItems[idItem] = postItComponent.createObject(board.internalBoard);
-            console.log(">> create " + idItem + " -> " + localItems[idItem] )
         }
     }
 
@@ -308,8 +317,6 @@ Zc.AppView
 
     function postItTextChanged(idItem,newText) {
         var o =  postItDefinition.getItem(idItem,"");
-
-        console.log(">> postItTextChanged " + idItem + " -> " + newText)
         postItDefinition.setItem(idItem,newText);
 
         if (o !== newText)
@@ -412,21 +419,9 @@ Zc.AppView
             {
                 mainView.createPostItIfNecessary(idItem)
                 var value = postItDefinition.getItem(idItem,"");
-                console.log(">> idItem " + idItem + " -> " + value)
 
                 localItems[idItem].text = value;
-
                 localItems[idItem].idItem = idItem;
-
-                /*if (localItems[idItem].text === "" ||
-                        localItems[idItem].text === null)
-                {
-                    var nickName = idItem.split("|");
-                    if (nickName.length > 0 && nickName[0] === mainView.context.nickname)
-                    {
-                     //   localItems[idItem].state = "edition"
-                    }
-                }*/
             }
 
             onItemDeleted :

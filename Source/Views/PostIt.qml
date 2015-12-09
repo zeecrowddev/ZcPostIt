@@ -205,9 +205,7 @@ FocusScope
         anchors.fill : parent
 
         onPressAndHold : {
-
-            console.log(">> onPressAndHold " + postIt.idItem);
-            mainView.showContexctualMenu(postIt.idItem);
+             mainView.showContexctualMenu(postIt.idItem);
         }
 
         /*
