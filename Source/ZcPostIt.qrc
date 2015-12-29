@@ -25,5 +25,7 @@
         <file>Components/ActionButtonStyle.qml</file>
         <file>Components/ActionList.qml</file>
         <file>Views/PostItEdit.qml</file>
+        <file>Resources/loupe_moins.png</file>
+        <file>Resources/loupe_plus.png</file>
     </qresource>
 </RCC>

@@ -29,12 +29,12 @@ import QtQuick.Layouts 1.2
 import ZcClient 1.0 as Zc
 
 ToolBar {
-    implicitHeight: Zc.AppStyleSheet.height(0.26)
+    implicitHeight: Zc.AppStyleSheet.height(0.3)
 
     style: ToolBarStyle {
         padding {
-            left: 12
-            right: 12
+            left: 10
+            right: 10
             top: 0
             bottom: 0
         }

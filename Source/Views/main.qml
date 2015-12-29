@@ -40,6 +40,8 @@ Zc.AppView
     {
         id : toolbarBoard
 
+        height: Zc.AppStyleSheet.height(0.3)
+
         anchors {
             right: parent.right
             left: parent.left
@@ -51,42 +53,44 @@ Zc.AppView
             id : toolBarId
             anchors.fill: parent
 
-            ToolButton {
+            PiComponents.ToolButton {
                 onClicked: {
                     showPostItEdit("","yellow");
                 }
                 iconSource: "../Resources/postit_yellow_icon.png"
             }
-            ToolButton {
+            PiComponents.ToolButton {
                 onClicked: {
                     showPostItEdit("","blue");
                 }
                 iconSource: "../Resources/postit_blue_icon.png"
             }
-            ToolButton {
+            PiComponents.ToolButton {
                 onClicked: {
                     showPostItEdit("","green");
                 }
                 iconSource: "../Resources/postit_green_icon.png"
             }
-            ToolButton {
+            PiComponents.ToolButton {
                 Layout.alignment: Qt.AlignLeft
                 onClicked: {
                     showPostItEdit("","pink");
                 }
                 iconSource: "../Resources/postit_pink_icon.png"
             }
-            ToolButton {
+            PiComponents.ToolButton {
                 Layout.alignment: Qt.AlignLeft
                 onClicked: {
                     board.internalBoard.scale += 0.1;
+                    board.resize()
                 }
                 iconSource: "../Resources/loupe_plus.png"
             }
-            ToolButton {
+            PiComponents.ToolButton {
                 Layout.alignment: Qt.AlignLeft
                 onClicked: {
                     board.internalBoard.scale -= 0.1;
+                    board.resize()
                 }
                 iconSource: "../Resources/loupe_moins.png"
             }
@@ -151,14 +155,14 @@ Zc.AppView
             right: parent.right
             top : toolbarBoard.bottom
         }
-        PinchArea {
+/*        PinchArea {
             anchors.fill: parent
 
             onSmartZoom : {
 
                 console.log(">> zoom")
             }
-        }
+        }*/
 
 
         /*onClicked: {

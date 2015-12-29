@@ -27,6 +27,10 @@ ScrollView
 {
     id : board
 
+    width : 100
+    height : 100
+
+
     property alias internalBoard : flickBoard
 
     /*
@@ -40,11 +44,11 @@ ScrollView
         var vx = 0;
         var vy = 0;
 
-        for(var i = 0 ; i < contentItem.children.length ; i++)
-        {
-            var item = contentItem.children[i];
+        for ( var key in mainView.localItems ) {
 
-            if (item.idItem!== undefined)
+            var item = mainView.localItems[key];
+
+            if (item.x !== undefined)
             {
                 if (item.x+item.width > vx)
                 {
@@ -57,25 +61,46 @@ ScrollView
             }
         }
 
-        flickBoard.width = vx //+ 10
-        flickBoard.height = vy //+ 10
+        console.log(">> vx " + vx)
+        console.log("vy " + vy)
+
+        flickBoard.width = vx; //Math.max(vx,board.width) /// internalBoardId.scale)*internalBoardId.scale + 10 /// flickBoard.scale //+ 10
+        flickBoard.height =vy;  //Math.max(vy,board.height) /// internalBoard.scale)*internalBoardId.scale + 10 // + 10 /// flickBoard.scale //+ 10
+
     }
 
-//    anchors.fill: parent
+    //    anchors.fill: parent
 
-    signal clicked();
+    //signal clicked();
 
-    Item
-    {
-        id : flickBoard
+    Item {
 
-        anchors.fill: parent
+        id : flickBoardConatinerId
 
-        /*Component.onCompleted:
+        width : flickBoard.width*flickBoard.scale + 10
+        height : flickBoard.height*flickBoard.scale + 10
+
+        Item
         {
-            anchors.fill = parent
-            height = parent.height// - 10
-            width = parent.width// - 10
-        }*/
+            id : flickBoard
+
+           // color : "red"
+
+            anchors.centerIn: parent
+
+     //       width : internalBoardId.width*internalBoardId.scale + 10
+     //       height : internalBoardId.height*internalBoardId.scale + 10
+
+            height : 100//parent.height * 2
+            width : 100 //parent.width * 2
+
+
+            Component.onCompleted:
+            {
+                //    anchors.fill = parent
+                // height = parent.height// - 10
+                // width = parent.width// - 10
+            }
+        }
     }
 }

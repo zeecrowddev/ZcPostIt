@@ -33,13 +33,24 @@ Button {
     id: button
 
     style: ButtonStyle {
-        background: Rectangle {
-            //implicitWidth:  appStyleSheet.width(0.3)
-            implicitHeight: Zc.AppStyleSheet.height(0.13) * 1.2
-            border.width: 2
-            border.color: control.pressed ? "#448": "white"
-            radius: 6
-            color: control.pressed ? "lightgrey" : "white"
+        background: Item {
+            implicitHeight: Zc.AppStyleSheet.height(0.3)
+            implicitWidth: implicitHeight
+
+            Image {
+
+                anchors.fill: parent
+
+                source : control.iconSource
+
+                Rectangle {
+                    anchors.fill: parent
+                    //border.width: 2
+                    //border.color: control.pressed ? "#448": "white"
+                    //radius: 6
+                    color: control.pressed ? "lightgrey" : "transparent"
+                }
+            }
         }
 
         label: Text {
