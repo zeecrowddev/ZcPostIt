@@ -32,10 +32,13 @@ import ZcClient 1.0 as Zc
 Button {
     id: button
 
+    height: Zc.AppStyleSheet.height(0.3)
+    width: Zc.AppStyleSheet.width(0.3)
+
     style: ButtonStyle {
-        background: Item {
-            implicitHeight: Zc.AppStyleSheet.height(0.3)
-            implicitWidth: implicitHeight
+        background: Rectangle {
+            height: Zc.AppStyleSheet.height(0.3)
+            width: Zc.AppStyleSheet.width(0.3)
 
             Image {
 
